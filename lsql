@@ -1,6 +1,22 @@
 #!/bin/bash 
 #Automated Sqlmap#
 
+if command -v unbuffer >/dev/null 2>&1
+ then
+sleep 0
+else
+sudo apt-get install expect-dev
+fi
+
+
+if command -v tput >/dev/null 2>&1
+ then
+sleep 0
+else
+sudo apt-get install ncurses-bin
+fi
+
+
 
 echo "  _                    ____   ___  _     ";
 echo " | |    __ _ _____   _/ ___| / _ \| |    ";
@@ -70,7 +86,7 @@ read -r Threads
 echo "Extra"
 read -r extra
 
-sqlmap --random-agent --batch --threads "$Threads" --dbs -u "$url" $extra | tee lsql.log 
+unbuffer sqlmap --random-agent --batch --threads "$Threads" --dbs -u "$url" $extra | tee lsql.log 
 
 echo
 echo
