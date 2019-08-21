@@ -1,6 +1,20 @@
 #!/bin/bash 
 #Automated Sqlmap#
 
+if command -v fsql >/dev/null 2>&1
+ then
+sleep 0
+else
+echo "#!/bin/bash 
+#Automated Sqlmap#
+lsql --fast" > /bin/fsql
+chmod +x /bin/fsql
+tput smso;
+echo "Added fsql command!"
+tput rmso;
+sleep 2
+fi
+
 if command -v unbuffer >/dev/null 2>&1
  then
 sleep 0
@@ -29,7 +43,7 @@ echo "LazySQL script is used for fast sqlmap scanning and dumping."
 echo "If no URL is specified, LazySQL uses the last clipboard entry."
 echo "If the number of threads is not specified, LazySQL uses "3" as standard value."
 echo
-echo "Use "lsql --fast" to start with copied url and default settings."
+echo "Use "lsql --fast" or "fsql" to start with copied url and default settings."
 echo
 echo "Confirmed injections can be found in either: ~/.lsql.vul (including timestamp) and ~/lsql.list (plain)."
 echo "Use "lsql --list" to show all confirmed url's."
