@@ -110,7 +110,7 @@ while true; do
 			if [ -z "$url" ]; then
                 		url=$(xclip -selection c -o)
 		        fi
-             elif echo $url | grep -q $url ~/lsql.no; then
+             elif echo $url | grep -q $url ~/.lsql.no; then
 		tput smso;
 		echo "Previous scan detected uninjectable url."
 		tput rmso;
@@ -176,7 +176,7 @@ echo
 sqlmap --random-agent -o --batch --no-cast --exclude-sysdb --tables -u ""$url""
 else
 echo
-echo "$url" >> ~/lsql.no
+echo "$url" >> ~/.lsql.no
 tput smso;
 echo "No injection found."
 tput rmso;
