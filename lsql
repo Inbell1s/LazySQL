@@ -16,8 +16,6 @@ else
 sudo apt-get install ncurses-bin
 fi
 
-
-
 echo "  _                    ____   ___  _     ";
 echo " | |    __ _ _____   _/ ___| / _ \| |    ";
 echo " | |   / _\` |_  / | | \___ \| | | | |    ";
@@ -31,6 +29,8 @@ echo "LazySQL script is used for fast sqlmap scanning and dumping."
 echo "If no URL is specified, LazySQL uses the last clipboard entry."
 echo "If the number of threads is not specified, LazySQL uses "3" as standard value."
 echo
+echo "Use "lsql --fast" to start with copied url and default settings."
+echo
 echo "Confirmed injections can be found in either: ~/.lsql.vul (including timestamp) and ~/lsql.list (plain)."
 echo "Use "lsql --list" to show all confirmed url's."
 echo 
@@ -43,6 +43,33 @@ if [ "$1" == --list ]; then
 echo "Confirmed Url's:"
 	tput rmso;	
 cat ~/.lsql.vul
+elif [ "$1" == --fast ]; then
+url=$(xclip -selection c -o)
+Threads="3"
+extra=""
+
+while true; do
+	if echo $url | grep -q -v "http"; then
+		tput rmso;
+		tput smso;
+		echo "Url does not contain "http or https""
+		tput rmso;
+		echo -ne '\007'
+		echo
+		echo "Valid url:"
+		read -r url
+			if [ -z "$url" ]; then
+                		url=$(xclip -selection c -o)
+		        fi
+	else
+		echo
+		tput smso;
+		echo "Using url: $url"
+		tput rmso;
+		break
+	fi
+done
+
 else
 
 
@@ -85,6 +112,8 @@ read -r Threads
 
 echo "Extra"
 read -r extra
+
+fi
 
 unbuffer sqlmap --random-agent --batch --threads "$Threads" --dbs -u "$url" $extra | tee lsql.log 
 
