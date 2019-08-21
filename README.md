@@ -14,6 +14,8 @@ Use the command **lsql** to start the wizard.
 U can find all injected urls with timestamp in "/.lsql.vul"
 U can find a link only list in "/lsql.list"
 
+Use "lsql --list" to instantly show all confirmed injections.
+
 ## Installation
 
 git clone https://github.com/Inbell1s/LazySQL lsql && cd lsql && chmod +x lsql && mv lsql /bin/lsql
