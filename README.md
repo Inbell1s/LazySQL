@@ -11,6 +11,8 @@ Made for private use by Inbell1s.
 ## Usage
 
 Use the command **lsql** to start the wizard.
+Use the command **rsql** to resume injection.
+
 U can find all injected urls with timestamp in "/.lsql.vul"
 U can find a link only list in "/lsql.list"
 
@@ -19,7 +21,7 @@ Use "**lsql --fast**" or "**fsql**" to quickstart using default settings and url
 
 ## Installation
 
-git clone https://github.com/Inbell1s/LazySQL lsql && cd lsql && chmod +x lsql && mv lsql /bin/lsql
+git clone https://github.com/Inbell1s/LazySQL lsql && cd lsql && chmod +x lsql rsql && mv lsql /bin/lsql && mv rsql /nin/rsql
 
 
 
