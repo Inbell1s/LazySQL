@@ -16,10 +16,19 @@ echo "If no URL is specified, LazySQL uses the last clipboard entry."
 echo "If the number of threads is not specified, LazySQL uses "3" as standard value."
 echo
 echo "Confirmed injections can be found in either: ~/.lsql.vul (including timestamp) and ~/lsql.list (plain)."
+echo "Use "lsql --list" to show all confirmed url's."
 echo 
 echo "Made for private use by Inbell1s."
 echo
 tput sgr0
+
+if [ "$1" == --list ]; then
+	tput smso;
+echo "Confirmed Url's:"
+	tput rmso;	
+cat ~/.lsql.vul
+else
+
 
 ##Input##
 echo "URL:"
@@ -119,4 +128,5 @@ sleep 3
 
 sqlmap --random-agent -o --batch --no-cast --exclude-sysdb --dump-all --dump-format sqlite -u ""$url""
 
+fi
 exit 0
