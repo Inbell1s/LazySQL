@@ -15,6 +15,7 @@ U can find all injected urls with timestamp in "/.lsql.vul"
 U can find a link only list in "/lsql.list"
 
 Use "lsql --list" to instantly show all confirmed injections.
+Use "lsql --fast" to quickstart using default settings and url on clipboard.
 
 ## Installation
 
