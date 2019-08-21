@@ -11,6 +11,8 @@ Made for private use by Inbell1s.
 ## Usage
 
 Use the command **lsql** to start the wizard.
+U can find all injected urls with timestamp in "~/.lsql.vul"
+U can find a link only list in "~/lsql.list"
 
 ## Installation
 
