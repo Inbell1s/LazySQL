@@ -1,6 +1,6 @@
 #!/bin/bash
 ##Settings#
-vn=2.2
+vn=2.3
 
 
 function versioncheck () {
@@ -248,6 +248,8 @@ function multi (){
   tput sgr0;
   sleep 3
   while IFS= read -r url; do
+    echo "Using: $url"
+    echo
     unbuffer sqlmap --random-agent --smart --batch --output-dir=~/MultiSQL/Dump/ --threads 3 --dbs -u "$url" | tee lsql.log
     echo
     if  grep -q "back-end DBMS:" lsql.log; then
