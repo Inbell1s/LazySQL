@@ -4,4 +4,8 @@ chmod +x /bin/lsql
 mkdir -p /usr/share/LazySQL/
 cp -r * /usr/share/LazySQL/
 cp .functions /usr/share/LazySQL/
-exec bash lsql
+tput smso;
+echo "Installation/Update succesfull!"
+tput rmso;
+sleep 4
+exit 0
