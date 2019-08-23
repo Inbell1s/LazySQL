@@ -109,7 +109,8 @@ function update () {
   rm -rf ~/.updatelsql
   git clone https://github.com/Inbell1s/LazySQL ~/.updatelsql
   cd ~/.updatelsql
-  chmod +x install && ./install
+  chmod +x install
+  ./install
   rm -rf ~/.updatelsql
   echo "Update succesfull!"
   exit 0
