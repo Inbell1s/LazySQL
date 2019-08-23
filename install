@@ -1,5 +1,6 @@
 #!/bin/bash
-cp ./lsql /bin/lsql
+echo '#!/bin/bash
+/usr/share/LazySQL/LazySQL "$@"' > /bin/lsql
 chmod +x /bin/lsql
 mkdir -p /usr/share/LazySQL/
 cp -r * /usr/share/LazySQL/
