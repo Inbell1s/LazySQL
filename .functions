@@ -1,7 +1,20 @@
 #!/bin/bash
+#2.0#
+##Settings#
+vn="2.1"
+
+
+function versioncheck () {
+  gvn=$(curl -s https://raw.githubusercontent.com/Inbell1s/LazySQL/master/README.md | grep -Po "(?<=V )([0-9]|\.)*(?=\s|$)")
+  if [[ ! "$vn" < "$gvn" ]]; then
+  echo "Update available!"
+  sleep 5
+  fi
+}
+
 
 ##Check requirements##
-function require (){
+function require () {
   if command -v fsql >/dev/null 2>&1
    then
   sleep 0
@@ -42,9 +55,8 @@ function logolsql () {
   echo " | |__| (_| |/ /| |_| |___) | |_| | |___ ";
   echo " |_____\__,_/___|\__, |____/ \__\_\_____|";
   echo "                 |___/                   ";
+  echo "Version: $vn"
   echo
-  echo
-  tput bold;
   echo "LazySQL script is used for fast sqlmap scanning and dumping."
   echo "If no URL is specified, LazySQL uses the last clipboard entry."
   echo "If the number of threads is not specified, LazySQL uses "3" as standard value."
@@ -63,7 +75,6 @@ function logolsql () {
   echo
   echo "Made for private use by Inbell1s."
   echo
-  tput sgr0
 }
 ##Menu##
 function menu (){
