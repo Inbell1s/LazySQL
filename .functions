@@ -1,12 +1,12 @@
 #!/bin/bash
 ##Settings#
-vn=2.1
+vn=2.1.1
 
 
 function versioncheck () {
   gvn=$(curl -s https://raw.githubusercontent.com/Inbell1s/LazySQL/master/.functions | grep -Po "(?<=vn=)([0-9]|\.)*(?=\s|$)")
   if [[ $vn=<$gvn ]]; then
-  logo
+  logolsql
   echo
   tput bold;
   tput smso;
