@@ -1,6 +1,7 @@
 #!/bin/bash
 source "/usr/share/LazySQL/.functions"
 require
+versioncheck
 logolsql
 commandargs $@
 
