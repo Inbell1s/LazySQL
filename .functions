@@ -21,7 +21,6 @@ else
   fi
 }
 
-
 ##Check requirements##
 function require () {
   if command -v fsql >/dev/null 2>&1
