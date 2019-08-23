@@ -91,6 +91,7 @@ function menu (){
             list
           ;;
           "Update")
+          update
           ;;
           "Quit")
           quit
@@ -103,6 +104,15 @@ function menu (){
   done
 }
 
+##Update##
+function update () {
+  git clone https://github.com/Inbell1s/LazySQL ~/updatelsql
+  cd ~/updatelsql
+  chmod +x install && ./install
+  rmdir -rf ~/updatelsql
+  echo "Update succesfull!"
+  exit 0
+}
 ##Checking Injection##
 function confirm(){
 input
