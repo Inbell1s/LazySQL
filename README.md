@@ -1,4 +1,4 @@
-# LazySQL
+# LazySQL V 2.0
 
 ## **Fast sqlmap scanning and dumping.**
 
