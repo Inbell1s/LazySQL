@@ -112,8 +112,7 @@ function update () {
   chmod +x install
   ./install
   rm -rf ~/.updatelsql
-  echo "Update succesfull!"
-  exit 0
+  exec bash lsql
 }
 ##Checking Injection##
 function confirm(){
