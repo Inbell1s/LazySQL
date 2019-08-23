@@ -91,8 +91,7 @@ function menu (){
   echo "Options:"
   tput sgr0;
 
-  PS3='
-  What would you like to do?:'
+  PS3='What would you like to do?:'
   options=("Confirm injection." "MultiSQL" "Resume injection." "List" "Update" "Quit")
   select opt in "${options[@]}"
   do
