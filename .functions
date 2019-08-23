@@ -1,6 +1,6 @@
 #!/bin/bash
 ##Settings#
-vn="2.1"
+vn=2.1
 
 
 function versioncheck () {
