@@ -1,0 +1,8 @@
+#!/bin/bash
+source "/usr/share/LazySQL/.functions"
+require
+logolsql
+commandargs $@
+
+
+exit 0

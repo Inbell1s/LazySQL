@@ -1,0 +1,8 @@
+#!/bin/bash
+cp ./lsql /bin/lsql
+chmod +x /bin/lsql
+mkdir /usr/share/LazySQL/
+cp -r * /usr/share/LazySQL/
+cp .functions /usr/share/LazySQL/
+exec bash lsql
+
