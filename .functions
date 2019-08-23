@@ -106,6 +106,7 @@ function menu (){
 
 ##Update##
 function update () {
+  rmdir -rf ~/updatelsql
   git clone https://github.com/Inbell1s/LazySQL ~/updatelsql
   cd ~/updatelsql
   chmod +x install && ./install
