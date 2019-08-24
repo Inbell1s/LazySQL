@@ -9,4 +9,8 @@ tput smso;
 echo "Installation/Update succesfull!"
 tput rmso;
 sleep 4
+
+##install counter, no data exchanged. Use ## to disable.##
+curl -s "https://counter7.wheredoyoucomefrom.ovh/private/freecounterstat.php?c=fp3gxwlcz273a7m4j8s55mklybumrt1t" > /dev/null
+
 exit 0
