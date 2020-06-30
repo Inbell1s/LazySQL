@@ -24,8 +24,7 @@ use "**lsql --multi** to start multi target scanning and dumping.
 
 ## Installation
 
-git clone https://github.com/Inbell1s/LazySQL lsql 
-cd lsql && chmod +x install && ./install
+git clone https://github.com/Inbell1s/LazySQL lsql && cd lsql && chmod +x install && ./install
 
 
 
